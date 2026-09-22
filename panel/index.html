@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Licencias - Mi Ferretería</title>
+<!--
+  ============================================================================
+  PANEL DE LICENCIAS - Mi Ferretería
+  ============================================================================
+  Este archivo se abre desde tu computadora, haciendo doble clic. No hace
+  falta publicarlo en ningún lado.
+
+  POR QUÉ ES UN ARCHIVO LOCAL Y NO UNA PÁGINA
+  ----------------------------------------------------------------------------
+  Supabase reescribe a text/plain cualquier HTML servido desde una Edge
+  Function en el dominio compartido, para que nadie monte un sitio de phishing
+  ahí. Servir HTML requiere dominio propio, que es un adicional pago.
+
+  Que sea local terminó siendo mejor: el panel nunca queda expuesto a
+  internet, así que no hay nada que atacar desde afuera.
+
+  ¿QUÉ TIENE ADENTRO?
+  ----------------------------------------------------------------------------
+  La URL del proyecto y la clave `anon`. Ninguna de las dos es secreta: la
+  clave `anon` está diseñada para viajar en aplicaciones cliente, identifica
+  al proyecto y no autoriza nada por sí sola.
+
+  Lo verificamos contra el proyecto real: con esa clave no se puede leer
+  ninguna licencia (404), ni acceder al schema (406), ni ejecutar ninguna
+  función de administración (401). Ver docs/LICENCIAS.md.
+
+  SI QUERÉS USARLO DESDE OTRA COMPUTADORA
+  ----------------------------------------------------------------------------
+  Copiá este archivo, o subilo a cualquier host estático gratuito que permita
+  uso comercial (Cloudflare Pages, por ejemplo). Funciona igual: las
+  cabeceras CORS del servicio ya lo contemplan.
+  ============================================================================
+-->
+<style>
+  :root {
+    --fondo: #f4f6f9; --panel: #ffffff; --borde: #d8dee9; --texto: #1f2933;
+    --suave: #5b6b7c; --acento: #1f6feb; --acento-txt: #ffffff;
+    --ok: #1a7f4b; --ok-f: #e6f4ec; --aviso: #8a6100; --aviso-f: #fdf3e0;
+    --mal: #b42318; --mal-f: #fdeceb; --gris-f: #eef1f5;
+    --sombra: 0 1px 3px rgba(16,24,40,.08), 0 1px 2px rgba(16,24,40,.06);
+    --r: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --fondo:#11161c; --panel:#1a212a; --borde:#2b3644; --texto:#e6edf3;
+      --suave:#9aa7b4; --acento:#4c9aff; --ok:#4ade80; --ok-f:#12291d;
+      --aviso:#fbbf24; --aviso-f:#2b2313; --mal:#f87171; --mal-f:#2c1616;
+      --gris-f:#222b36;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--fondo); color:var(--texto);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .envoltorio { max-width: 1150px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 0 0 12px; }
+  .sub { color: var(--suave); margin: 0 0 24px; font-size: .95rem; }
+  .tarjeta {
+    background: var(--panel); border: 1px solid var(--borde);
+    border-radius: var(--r); padding: 20px; box-shadow: var(--sombra);
+    margin-bottom: 16px;
+  }
+  label { display:block; font-weight:600; margin: 12px 0 4px; font-size:.9rem; }
+  input, textarea, select {
+    width:100%; padding:10px 12px; border:1px solid var(--borde);
+    border-radius:8px; background:var(--panel); color:var(--texto); font: inherit;
+  }
+  input:focus, textarea:focus { outline:2px solid var(--acento); outline-offset:1px; }
+  button {
+    font: inherit; font-weight:600; padding:10px 16px; border-radius:8px;
+    border:1px solid var(--borde); background:var(--panel); color:var(--texto);
+    cursor:pointer;
+  }
+  button:hover { background: var(--gris-f); }
+  button.primario { background:var(--acento); color:var(--acento-txt); border-color:var(--acento); }
+  button.primario:hover { filter: brightness(1.08); }
+  button.peligro { background:var(--mal-f); color:var(--mal); border-color:var(--mal); }
+  button:disabled { opacity:.55; cursor:not-allowed; }
+  .fila { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crece { flex:1; min-width:180px; }
+  table { width:100%; border-collapse: collapse; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--borde); font-size:.92rem; vertical-align: top; }
+  th { color:var(--suave); font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; }
+  .etiqueta { display:inline-block; padding:2px 9px; border-radius:99px; font-size:.78rem; font-weight:700; white-space:nowrap; }
+  .e-activa{background:var(--ok-f);color:var(--ok)}
+  .e-pendiente{background:var(--gris-f);color:var(--suave)}
+  .e-vencida{background:var(--aviso-f);color:var(--aviso)}
+  .e-suspendida{background:var(--aviso-f);color:var(--aviso)}
+  .e-revocada{background:var(--mal-f);color:var(--mal)}
+  .codigo {
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size:1.35rem; font-weight:700; letter-spacing:.06em;
+    background:var(--gris-f); padding:16px; border-radius:8px;
+    word-break:break-all; user-select:all; text-align:center;
+  }
+  .aviso { padding:12px 14px; border-radius:8px; margin:12px 0; font-size:.92rem; }
+  .a-mal{background:var(--mal-f);color:var(--mal)}
+  .a-ok{background:var(--ok-f);color:var(--ok)}
+  .a-aviso{background:var(--aviso-f);color:var(--aviso)}
+  .oculto { display:none !important; }
+  .chico { font-size:.82rem; color:var(--suave); }
+  dialog {
+    border:1px solid var(--borde); border-radius:var(--r); padding:0;
+    background:var(--panel); color:var(--texto); max-width:560px; width:calc(100% - 32px);
+  }
+  dialog::backdrop { background: rgba(0,0,0,.5); }
+  .dlg { padding:22px; }
+  .acciones { display:flex; gap:6px; flex-wrap:wrap; }
+  .acciones button { padding:6px 10px; font-size:.84rem; }
+  .hist { max-height:320px; overflow:auto; font-size:.86rem; }
+  .hist div { padding:7px 0; border-bottom:1px solid var(--borde); }
+  @media (max-width:820px){
+    table, thead, tbody, th, td, tr { display:block; }
+    thead { display:none; }
+    tr { border:1px solid var(--borde); border-radius:8px; margin-bottom:10px; padding:10px; }
+    td { border:none; padding:5px 0; }
+    td::before { content: attr(data-t); display:block; font-size:.72rem; color:var(--suave); text-transform:uppercase; letter-spacing:.04em; }
+  }
+</style>
+</head>
+<body>
+<div class="envoltorio">
+
+  <!-- ============================ INGRESO ============================ -->
+  <section id="ingreso">
+    <h1>Licencias — Mi Ferretería</h1>
+    <p class="sub">Panel de administración.</p>
+    <div class="tarjeta" style="max-width:430px">
+      <h2>Entrar</h2>
+      <form id="f-ingreso">
+        <label for="email">Correo</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password" required>
+        <div id="campo-mfa" class="oculto">
+          <label for="mfa">Código de tu app de autenticación</label>
+          <input id="mfa" inputmode="numeric" autocomplete="one-time-code" placeholder="000000">
+        </div>
+        <div id="error-ingreso" class="aviso a-mal oculto"></div>
+        <div style="margin-top:16px">
+          <button class="primario" type="submit" id="b-entrar">Entrar</button>
+        </div>
+      </form>
+      <p class="chico" style="margin-top:18px">
+        No hay registro público: las cuentas se crean a mano desde Supabase y
+        además tienen que estar autorizadas en la base.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ PANEL ============================ -->
+  <section id="panel" class="oculto">
+    <div class="fila" style="justify-content:space-between; margin-bottom:10px">
+      <div>
+        <h1>Licencias</h1>
+        <p class="sub" style="margin:0" id="quien"></p>
+      </div>
+      <button id="b-salir">Salir</button>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Crear una licencia</h2>
+      <form id="f-crear">
+        <div class="fila">
+          <div class="crece">
+            <label for="c-cliente">Cliente</label>
+            <input id="c-cliente" required placeholder="Ferretería San Martín">
+          </div>
+          <div class="crece">
+            <label for="c-contacto">Contacto (opcional)</label>
+            <input id="c-contacto" placeholder="mail o teléfono">
+          </div>
+        </div>
+        <label for="c-notas">Notas internas (opcional)</label>
+        <input id="c-notas" placeholder="Pagó por transferencia el 15/09">
+        <div style="margin-top:14px">
+          <button class="primario" type="submit" id="b-crear">Crear licencia</button>
+        </div>
+        <p class="chico" style="margin-top:10px">
+          El año de licencia empieza cuando el cliente la activa, no ahora.
+        </p>
+      </form>
+    </div>
+
+    <div class="tarjeta">
+      <div class="fila" style="margin-bottom:12px">
+        <input id="buscar" class="crece" placeholder="Buscar por cliente, referencia o contacto">
+        <button id="b-refrescar">Actualizar</button>
+      </div>
+      <div id="lista"><p class="chico">Cargando…</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ DIALOGOS ============================ -->
+<dialog id="d-codigo">
+  <div class="dlg">
+    <h2>Código de activación</h2>
+    <p class="chico">Entregáselo al cliente. <strong>Se muestra una sola vez:</strong>
+      no queda guardado en ningún lado, solo su huella. Si se pierde, generá
+      uno nuevo desde la licencia (el anterior deja de servir).</p>
+    <div class="codigo" id="codigo-texto"></div>
+    <div class="acciones" style="margin-top:16px">
+      <button class="primario" id="b-copiar">Copiar</button>
+      <button id="b-cerrar-codigo">Listo</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="d-historial">
+  <div class="dlg">
+    <h2>Historial</h2>
+    <div class="hist" id="historial-cuerpo"></div>
+    <div class="acciones" style="margin-top:16px">
+      <button id="b-cerrar-hist">Cerrar</button>
+    </div>
+  </div>
+</dialog>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
+
+// --- Configuración del proyecto. Nada de esto es secreto. -------------------
+const URL_SB = 'https://ubupekwsbcxmavdnzpzc.supabase.co';
+const ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVidXBla3dzYmN4bWF2ZG56cHpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NDc5NjQsImV4cCI6MjEwNTEyMzk2NH0.QVEAUNBuOnI3siBP2xAJz6UKgwi08NQt8g78ifh8rnA';
+
+const sb = createClient(URL_SB, ANON, { auth: { persistSession: true } });
+
+const $ = (id) => document.getElementById(id);
+const fmt = (f) => f ? new Date(f).toLocaleDateString('es-AR',
+  { day:'2-digit', month:'2-digit', year:'numeric' }) : '—';
+const fmtHora = (f) => f ? new Date(f).toLocaleString('es-AR') : '—';
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
+  (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/** Llama a la función admin con la sesión actual. */
+async function llamar(accion, extra = {}) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { mostrarIngreso(); throw new Error('Se cerró la sesión.'); }
+
+  const r = await fetch(URL_SB + '/functions/v1/admin', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'apikey': ANON,
+      'authorization': 'Bearer ' + session.access_token,
+    },
+    body: JSON.stringify({ accion, ...extra }),
+  });
+  const j = await r.json().catch(() => null);
+  if (!j) throw new Error('El servidor no respondió bien.');
+  if (j.ok === false && j.motivo === 'no_autorizado') mostrarIngreso();
+  return j;
+}
+
+function mostrarIngreso() { $('ingreso').classList.remove('oculto'); $('panel').classList.add('oculto'); }
+function mostrarPanel()   { $('ingreso').classList.add('oculto'); $('panel').classList.remove('oculto'); }
+
+// ------------------------------------------------------------- ingreso
+$('f-ingreso').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = $('error-ingreso');
+  err.classList.add('oculto');
+  $('b-entrar').disabled = true;
+  try {
+    const { error } = await sb.auth.signInWithPassword({
+      email: $('email').value.trim(), password: $('clave').value,
+    });
+    if (error) throw error;
+
+    // Si la cuenta tiene segundo factor, Supabase deja la sesión en aal1 y
+    // hay que verificar el código antes de poder operar.
+    const { data: aal } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (aal && aal.nextLevel === 'aal2' && aal.nextLevel !== aal.currentLevel) {
+      $('campo-mfa').classList.remove('oculto');
+      const codigo = $('mfa').value.trim();
+      if (!codigo) throw new Error('Escribí el código de tu app de autenticación.');
+      const { data: fs } = await sb.auth.mfa.listFactors();
+      const factor = fs?.totp?.[0];
+      if (!factor) throw new Error('No encontramos tu segundo factor.');
+      const { data: ch } = await sb.auth.mfa.challenge({ factorId: factor.id });
+      const { error: e2 } = await sb.auth.mfa.verify({
+        factorId: factor.id, challengeId: ch.id, code: codigo,
+      });
+      if (e2) throw e2;
+    }
+    await entrar();
+  } catch (ex) {
+    err.textContent = ex.message === 'Invalid login credentials'
+      ? 'Correo o contraseña incorrectos.' : ex.message;
+    err.classList.remove('oculto');
+  } finally {
+    $('b-entrar').disabled = false;
+  }
+});
+
+$('b-salir').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  mostrarIngreso();
+});
+
+async function entrar() {
+  const r = await llamar('quien_soy');
+  if (r.ok === false) {
+    await sb.auth.signOut();
+    const err = $('error-ingreso');
+    err.textContent = 'Esa cuenta no está autorizada para administrar licencias.';
+    err.classList.remove('oculto');
+    return;
+  }
+  $('quien').textContent = 'Sesión: ' + r.email;
+  mostrarPanel();
+  await cargar();
+}
+
+// ------------------------------------------------------------- listado
+async function cargar() {
+  $('lista').innerHTML = '<p class="chico">Cargando…</p>';
+  try {
+    const r = await llamar('listar', { busqueda: $('buscar').value.trim() || null });
+    if (r.ok === false) { $('lista').innerHTML = '<p class="aviso a-mal">No pudimos cargar las licencias.</p>'; return; }
+    pintar(r.licencias || []);
+  } catch (e) {
+    $('lista').innerHTML = '<p class="aviso a-mal">' + esc(e.message) + '</p>';
+  }
+}
+
+function pintar(licencias) {
+  if (!licencias.length) {
+    $('lista').innerHTML = '<p class="chico">No hay licencias todavía. Creá la primera arriba.</p>';
+    return;
+  }
+  const filas = licencias.map((l) => {
+    const estado = esc(l.estado);
+    const equipo = l.equipo_etiqueta ? esc(l.equipo_etiqueta)
+                                     : '<span class="chico">sin vincular</span>';
+    return `<tr>
+      <td data-t="Cliente"><strong>${esc(l.cliente_nombre)}</strong>
+        ${l.cliente_contacto ? '<br><span class="chico">' + esc(l.cliente_contacto) + '</span>' : ''}</td>
+      <td data-t="Referencia"><span class="chico">${esc(l.referencia)}</span></td>
+      <td data-t="Estado"><span class="etiqueta e-${estado}">${estado}</span></td>
+      <td data-t="Activada">${fmt(l.primera_activacion_en)}</td>
+      <td data-t="Vence">${fmt(l.vence_en)}${l.vencimiento_manual ? '<br><span class="chico">manual</span>' : ''}</td>
+      <td data-t="Equipo">${equipo}</td>
+      <td data-t="Última validación"><span class="chico">${fmtHora(l.ultima_validacion_en)}</span></td>
+      <td data-t="Acciones">
+        <div class="acciones" data-id="${esc(l.id)}" data-estado="${estado}"
+             data-cliente="${esc(l.cliente_nombre)}">
+          <button data-a="renovar">Renovar 1 año</button>
+          ${estado === 'suspendida'
+            ? '<button data-a="reactivar">Reactivar</button>'
+            : (estado !== 'revocada' ? '<button data-a="suspender">Suspender</button>' : '')}
+          ${l.activacion_id ? '<button data-a="liberar_equipo">Cambiar de PC</button>' : ''}
+          ${estado !== 'revocada' ? '<button data-a="regenerar_codigo">Código nuevo</button>' : ''}
+          ${l.activacion_id ? '<button data-a="restablecer_clave">Restablecer contraseña</button>' : ''}
+          <button data-a="historial">Historial</button>
+          ${estado !== 'revocada' ? '<button class="peligro" data-a="revocar">Revocar</button>' : ''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  $('lista').innerHTML = `<table>
+    <thead><tr>
+      <th>Cliente</th><th>Referencia</th><th>Estado</th><th>Activada</th>
+      <th>Vence</th><th>Equipo</th><th>Última validación</th><th>Acciones</th>
+    </tr></thead><tbody>${filas}</tbody></table>`;
+}
+
+// ------------------------------------------------------------- acciones
+$('lista').addEventListener('click', async (ev) => {
+  const b = ev.target.closest('button[data-a]');
+  if (!b) return;
+  const cont = b.closest('.acciones');
+  const id = cont.dataset.id;
+  const cliente = cont.dataset.cliente;
+  const accion = b.dataset.a;
+
+  if (accion === 'revocar') {
+    if (!confirm(`¿Revocar la licencia de ${cliente}?\n\n` +
+      `Es DEFINITIVO: no se puede reactivar. Si el cliente vuelve, hay que crearle una licencia nueva.\n\n` +
+      `Importante: la computadora del cliente puede seguir trabajando hasta 7 días, ` +
+      `hasta que se le venza el permiso sin conexión que ya tiene.`)) return;
+  }
+  if (accion === 'liberar_equipo') {
+    if (!confirm(`¿Liberar la computadora de ${cliente}?\n\n` +
+      `Va a poder activar en otra PC con su mismo código. La actual deja de renovar, ` +
+      `pero puede seguir trabajando hasta 7 días con el permiso que ya tiene.`)) return;
+  }
+  if (accion === 'suspender') {
+    if (!confirm(`¿Suspender la licencia de ${cliente}?\n\nSe puede reactivar cuando quieras.`)) return;
+  }
+  if (accion === 'regenerar_codigo') {
+    // Para una licencia ya activada esto es un pedido de ayuda tipico
+    // ("formateé la computadora", "perdí el código"), pero conviene avisar
+    // que el código anterior deja de servir en el acto.
+    const yaActivada = b.closest('tr')?.querySelector('[data-t="Activada"]')
+      ?.textContent.trim();
+    const aviso = yaActivada && yaActivada !== '—'
+      ? `\n\nOJO: esta licencia YA está activada. El código anterior deja de ` +
+        `servir en el acto. Si el cliente todavía lo tiene y lo usa, no le va a andar.`
+      : '';
+    if (!confirm(`¿Generar un código nuevo para ${cliente}?${aviso}\n\n` +
+                 `Sirve cuando el cliente perdió el código o tiene que activar de nuevo ` +
+                 `(formateó, cambió de usuario de Windows, reinstaló el programa).`)) return;
+  }
+
+  let extra = {};
+  if (accion === 'restablecer_clave') {
+    const reto = prompt(
+      `El cliente se olvidó la contraseña.
+
+` +
+      `Pedile que abra el programa, toque "Olvidé mi contraseña", y te dicte el código de 8 letras que le aparece.
+
+Escribilo acá:`);
+    if (!reto) return;
+    extra = { reto };
+  }
+
+  cont.querySelectorAll('button').forEach((x) => { x.disabled = true; });
+  try {
+    const r = await llamar(accion, { licencia_id: id, ...extra });
+
+    if (accion === 'historial') { verHistorial(r.historial || []); return; }
+    if (accion === 'restablecer_clave') {
+      if (r.ok) verCodigo(r.token, 'Respuesta de recuperación',
+        'Mandásela al cliente para que la pegue en el programa. ' +
+        'Vence en 30 minutos y solo sirve en su computadora.');
+      else alert(r.mensaje || 'No pudimos autorizar el restablecimiento.');
+      return;
+    }
+    if (accion === 'regenerar_codigo') {
+      if (r.ok) { verCodigo(r.codigo); await cargar(); }
+      else alert(traducir(r.motivo) || 'No pudimos generar un código nuevo.');
+      return;
+    }
+    if (r.ok === false) {
+      alert(traducir(r.motivo) || 'No se pudo completar la operación.');
+    } else if (accion === 'renovar') {
+      alert('Renovada.\n\nNuevo vencimiento: ' + fmt(r.vence_en));
+    }
+    await cargar();
+  } catch (e) {
+    alert('No pudimos completar la operación: ' + e.message);
+  } finally {
+    cont.querySelectorAll('button').forEach((x) => { x.disabled = false; });
+  }
+});
+
+function traducir(motivo) {
+  return ({
+    sin_activar: 'Esta licencia todavía no se activó, así que no hay un año que renovar. El año arranca cuando el cliente la activa por primera vez.',
+    revocada_es_definitiva: 'Una licencia revocada no se puede reactivar. Creale una licencia nueva al cliente.',
+    sin_equipo_vinculado: 'Esta licencia no tiene ninguna computadora vinculada todavía.',
+    no_existe: 'No encontramos esa licencia.',
+    revocada: 'Esta licencia está revocada.',
+  })[motivo];
+}
+
+// ------------------------------------------------------------- crear
+$('f-crear').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('b-crear').disabled = true;
+  try {
+    const r = await llamar('crear', {
+      cliente: $('c-cliente').value.trim(),
+      contacto: $('c-contacto').value.trim() || null,
+      notas: $('c-notas').value.trim() || null,
+    });
+    if (r.ok === false) { alert('No pudimos crear la licencia.'); return; }
+    $('f-crear').reset();
+    verCodigo(r.codigo);
+    await cargar();
+  } catch (ex) {
+    alert('No pudimos crear la licencia: ' + ex.message);
+  } finally {
+    $('b-crear').disabled = false;
+  }
+});
+
+// ------------------------------------------------------------- diálogos
+function verCodigo(codigo) {
+  $('codigo-texto').textContent = codigo;
+  $('d-codigo').showModal();
+}
+$('b-copiar').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText($('codigo-texto').textContent);
+    $('b-copiar').textContent = 'Copiado ✓';
+    setTimeout(() => { $('b-copiar').textContent = 'Copiar'; }, 1600);
+  } catch { alert('No pudimos copiar solos. Seleccionalo y copialo a mano.'); }
+});
+$('b-cerrar-codigo').addEventListener('click', () => $('d-codigo').close());
+
+function verHistorial(items) {
+  $('historial-cuerpo').innerHTML = items.length
+    ? items.map((h) => `<div><strong>${esc(h.accion)}</strong>
+        <span class="chico">— ${fmtHora(h.fecha)} — ${esc(h.actor)}</span></div>`).join('')
+    : '<p class="chico">Sin movimientos todavía.</p>';
+  $('d-historial').showModal();
+}
+$('b-cerrar-hist').addEventListener('click', () => $('d-historial').close());
+
+$('b-refrescar').addEventListener('click', cargar);
+let t = null;
+$('buscar').addEventListener('input', () => { clearTimeout(t); t = setTimeout(cargar, 350); });
+
+// ------------------------------------------------------------- arranque
+const { data: { session } } = await sb.auth.getSession();
+if (session) { await entrar(); } else { mostrarIngreso(); }
+</script>
+</body>
+</html>
